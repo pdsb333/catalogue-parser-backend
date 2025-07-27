@@ -1,10 +1,12 @@
 from typing import Optional, Dict, Any
-from pydantic import BaseModel
+from pydantic import BaseModel , ConfigDict
 
 class ParserBase(BaseModel):
     name: str
     categorie_id: Optional[int]
     extra_properties: Dict[str, Any] = {}
+    model_config = ConfigDict(from_attributes=True)
+
 
 class ParserCreate(ParserBase):
     pass  
@@ -13,8 +15,7 @@ class ParserRead(ParserBase):
     id: int
     admin_id: int
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class ParserUpdate(BaseModel):
     name: Optional[str] = None

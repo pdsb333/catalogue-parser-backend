@@ -4,8 +4,8 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy import Column 
 
 if TYPE_CHECKING:
-    from app.models.categories import Categorie
-    from app.models.users import User
+    from app.models.categorie import Categorie
+    from app.models.user import User
 
 class Parser(SQLModel, table=True):
     __tablename__="parser"
@@ -19,7 +19,7 @@ class Parser(SQLModel, table=True):
         sa_column=Column(JSONB, nullable=False)
     )
 
-    categorie: Optional["Categorie"] = Relationship(back_populates="parsers")
+    categories: Optional["Categorie"] = Relationship(back_populates="parsers")
     admin: Optional["User"] = Relationship(back_populates="parsers")
 
 

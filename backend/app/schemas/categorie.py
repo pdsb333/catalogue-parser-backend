@@ -1,19 +1,22 @@
-from typing import Optional
-from pydantic import BaseModel
+from typing import Optional, List
+from pydantic import BaseModel, ConfigDict
+from app.schemas.parser import ParserRead
 
 
 class CategorieBase(BaseModel):
-    nom: str
-
+    name: str
 
 class CategorieCreate(CategorieBase):
     pass  
 
+class CategorieWithParsers(CategorieBase):
+    parsers: List[ParserRead]
+    model_config = ConfigDict(from_attributes=True)
+
 class CategorieRead(CategorieBase):
     id: int
-
-    class Config:
-        orm_mode = True  
+    admin_id: int
+    model_config = ConfigDict(from_attributes=True)
 
 class CategorieUpdate(BaseModel):
-    nom: Optional[str] = None
+    name: Optional[str] = None
