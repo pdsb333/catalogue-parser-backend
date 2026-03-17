@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: catalogue-parser-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        sync: false        # tu le saisiras manuellement dans le dashboard Render
+    healthCheckPath: /health

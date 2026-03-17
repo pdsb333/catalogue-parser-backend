@@ -7,9 +7,11 @@ from app.routes import parser_router, categorie_router, login, users
 
 app = FastAPI(
     title="Catalogue Parser API",
-    docs_url=None if os.getenv("APP_ENV") == "production" else "/docs",
-    redoc_url=None if os.getenv("APP_ENV") == "production" else "/redoc",
-    openapi_url=None if os.getenv("APP_ENV") == "production" else "/openapi.json",
+   #displayed for demo purposes, but should be disabled in production for security reasons
+    description="API pour parser les catalogues de produits et gérer les utilisateurs",
+   # docs_url=None if os.getenv("APP_ENV") == "production" else "/docs",
+   # redoc_url=None if os.getenv("APP_ENV") == "production" else "/redoc",
+   # openapi_url=None if os.getenv("APP_ENV") == "production" else "/openapi.json",
 )
 
 
@@ -31,6 +33,8 @@ app.include_router(categorie_router)
 app.include_router(login)
 app.include_router(users)
 
-
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 
