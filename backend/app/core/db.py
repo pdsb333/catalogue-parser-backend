@@ -10,7 +10,6 @@ APP_ENV = os.getenv("APP_ENV", "development")
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL is not set")
 
-# Neon exige SSL en prod
 if APP_ENV != "development" and "sslmode" not in DATABASE_URL:
     DATABASE_URL += "?sslmode=require"
 

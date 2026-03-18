@@ -50,6 +50,7 @@ cd catalogue-parsers/
 2. **Créer un fichier .env à la racine du projet avec les variables suivantes :**
 
 ```env
+APP_ENV=development
 POSTGRES_USER=myuser
 POSTGRES_PASSWORD=mypassword
 POSTGRES_DB=mydatabase
@@ -57,6 +58,7 @@ DATABASE_URL=postgresql+psycopg2://myuser:mypassword@postgres:5432/mydatabase
 DATABASE_URL_TEST=postgresql+psycopg2://test_user:test_pass@db_test:5432/test_db
 JWT_SECRET_KEY=nimportequellechainehashed
 JWT_REFRESH_SECRET_KEY=nimportequelchainemaisdifferentedelautreducoup
+FRONTEND_URL=http://localhost:3000
 ```
 3. **Lancer le projet :**
 
@@ -76,9 +78,19 @@ alembic upgrade head
 python -m app.seed
 ```
 
+> ⚠️ Le seed insère des utilisateurs avec un mot de passe haché. Si vous avez besoin de générer ce hash manuellement (ex : insertion directe en base), voici la procédure :
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r ./requirements/base.txt
+python3 -c "from app.core import hasher_mot_de_passe; print(hasher_mot_de_passe('votre_mot_de_passe'))"
+```
+
 4. **La documentation du swagger est disponible a l'url :**
 
  - http://localhost:8080/docs
+
+> ℹ️ La documentation est intentionnellement laissée accessible en production à des fins de démonstration.
 
 ## 🔬 Lancer les tests
 
