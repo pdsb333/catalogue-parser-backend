@@ -1,26 +1,54 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* --- Colors --- */
+  --color-fr-blue: #000091;
+  --color-fr-red: #E1000F;
+  --color-bg: #FFFFFF;
+  --color-bg-alt: #F6F6F6;
+  --color-text: #161616;
+  --color-text-muted: #666666;
+  --color-success: #18753C;
+  --color-error: var(--color-fr-red);
+
+  /* --- Fonts --- */
+  --font-main: "Marianne", sans-serif;
+  --font-code: "JetBrains Mono", monospace;
+  
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --font-weight-bold: 700;
+
+  /* --- Spacing & Dimensions --- */
+  --spacing-s: 4px;
+  --spacing-m: 16px;
+  --spacing-l: 24px;
+  
+  --radius-none: 0px;
+
+  /* --- Shadows --- */
+  --shadow-card: 0 2px 6px rgba(0, 0, 145, 0.08);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* --- Base Styles --- */
+@layer base {
+  body {
+    @apply bg-bg text-text font-main antialiased;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  code, pre {
+    @apply font-code;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* --- Utilities & Components Mocks --- */
+@layer components {
+  .card-fr {
+    @apply bg-bg p-m shadow-card border border-bg-alt;
+    border-radius: var(--radius-none);
+  }
+  
+  .btn-primary {
+    @apply bg-fr-blue text-bg px-m py-s font-bold transition-opacity hover:opacity-90;
+  }
 }
