@@ -1,6 +1,17 @@
 # 📚 Parsers Catalog - Backend
 
-This project is a REST API built with FastAPI to centralize, manage, and search for Fluent Bit and Fluentd parsers. The application is intended for administrators in version 1, featuring secure authentication.
+[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+> **Status:** 🚀 Production Ready | **Focus:** DevOps & Log Management
+
+## 🎯 Project Overview
+
+This REST API centralizes, manages, and searches for **Fluent Bit** and **Fluentd** parsers. 
+It solves a common DevOps pain point: managing complex regex and configurations for log parsing across multiple environments.
+
+* **V1 Goal:** Centralized repository for administrators with secure JWT authentication.
+* **Target:** System Administrators & SRE teams.
 
 ## 🚀 Key Features
 
