@@ -1,132 +1,191 @@
-# 📚 Catalogue de Parsers - Backend
+# 📚 Parsers Catalog - Backend
 
-Ce projet est une API REST construite avec FastAPI permettant de centraliser, gérer et rechercher des parsers pour Fluent Bit et Fluentd. L'application est destinée aux administrateurs dans sa version 1, avec une authentification sécurisée.
+[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+> **Status:** 🚀 Production Ready | **Focus:** DevOps & Log Management
 
-## 🚀 Fonctionnalités principales
+## 🎯 Project Overview
 
-- CRUD complet sur les parsers
-- Catégorisation des parsers par type
-- Authentification des administrateurs (V1)
-- Tests unitaires et d'intégration
-- CI/CD avec GitLab + Alembic
+This REST API centralizes, manages, and searches for **Fluent Bit** and **Fluentd** parsers. 
+It solves a common DevOps pain point: managing complex regex and configurations for log parsing across multiple environments.
 
----
+* **V1 Goal:** Centralized repository for administrators with secure JWT authentication.
+* **Target:** System Administrators & SRE teams.
 
-## 🛠️ Stack technique
+## 🚀 Key Features
 
-| Composant         | Technologie              |
-|------------------|--------------------------|
-| Backend API      | FastAPI                  |
-| ORM              | SQLModel                 |
-| Base de données  | PostgreSQL (via Docker)  |
-| Migrations       | Alembic                  |
-| Authentification | JWT (ou login classique) |
-| Tests            | Pytest, MagicMock        |
-| CI/CD            | GitLab CI                |
-| Conteneurisation | Docker / Docker Compose  |
+- Full CRUD operations for parsers
+- Categorization of parsers by type
+- Administrator authentication (V1)
+- Unit and integration tests
+- CI/CD with GitLab + Alembic
 
 ---
 
-## 🧱 Modèles de données
+## 🛠️ Technical Stack
+
+| Component         | Technology                |
+|-------------------|---------------------------|
+| Backend API       | FastAPI                   |
+| ORM               | SQLModel                  |
+| Database          | PostgreSQL (via Docker)   |
+| Migrations        | Alembic                   |
+| Authentication    | JWT (or classic login)    |
+| Tests             | Pytest, MagicMock         |
+| CI/CD             | GitLab CI                 |
+| Containerization  | Docker / Docker Compose   |
+
+---
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+- **Docker** (v20.10+)
+- **Docker Compose** (v2.0+)
+- **Python** (v3.10+ if running outside Docker)
+
+---
+
+## 🧱 Data Models
 
 - **User**
-  - `id`, `email`, `mot_de_passe`
-- **Categorie**
-  - `id`, `nom`
+  - `id`, `email`, `password`
+- **Category**
+  - `id`, `name`
 - **Parser**
-  - `id`, `nom`, `description`, `contenu`, `type_id`, `admin_id`
+  - `id`, `name`, `description`, `content`, `type_id`, `admin_id`
 
 ---
 
-## 📦 Installation locale
+## 📦 Local Installation
 
-1. **Cloner le dépôt :**
+1. **Clone the repository:**
 
 ```bash
-git clone https://gitlab.com/ton-projet/catalogue-parsers.git
-cd catalogue-parsers/
+git clone https://gitlab.com/your-project/parsers-catalog.git
+cd parsers-catalog/
 ```
 
-2. **Créer un fichier .env à la racine du projet avec les variables suivantes :**
+2. **Create a .env file at the root of the project with the following variables:**
 
 ```env
-APP_ENV=development
-POSTGRES_USER=myuser
-POSTGRES_PASSWORD=mypassword
-POSTGRES_DB=mydatabase
-DATABASE_URL=postgresql+psycopg2://myuser:mypassword@postgres:5432/mydatabase
-DATABASE_URL_TEST=postgresql+psycopg2://test_user:test_pass@db_test:5432/test_db
-JWT_SECRET_KEY=nimportequellechainehashed
-JWT_REFRESH_SECRET_KEY=nimportequelchainemaisdifferentedelautreducoup
-FRONTEND_URL=http://localhost:3000
+APP_ENV=development # Application environment (development, production)
+POSTGRES_USER=myuser # PostgreSQL username
+POSTGRES_PASSWORD=mypassword # PostgreSQL password
+POSTGRES_DB=mydatabase # PostgreSQL database name
+DATABASE_URL=postgresql+psycopg2://myuser:mypassword@postgres:5432/mydatabase # Main database connection string
+DATABASE_URL_TEST=postgresql+psycopg2://test_user:test_pass@db_test:5432/test_db # Test database connection string
+JWT_SECRET_KEY=anyhashedstring # Secret key for JWT signing
+JWT_REFRESH_SECRET_KEY=anotherdifferenthashedstring # Secret key for JWT refresh token signing
+FRONTEND_URL=http://localhost:3000 # Allowed CORS origin for frontend
 ```
-3. **Lancer le projet :**
+
+3. **Start the project:**
 
 ```bash
 docker compose up --build 
 ```
 
-4. **Lancer les migrations Alembic  :**
+4. **Run Alembic migrations:**
 
 ```bash
 alembic upgrade head
 ```
 
-5. **Un fichier seed est disponible pour avoir des données de test  :**
+5. **A seed file is available to populate test data:**
 
 ```bash
 python -m app.seed
 ```
 
-> ⚠️ Le seed insère des utilisateurs avec un mot de passe haché. Si vous avez besoin de générer ce hash manuellement (ex : insertion directe en base), voici la procédure :
+> ⚠️ The seed script inserts users with hashed passwords. If you need to generate this hash manually, follow this procedure:
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r ./requirements/base.txt
-python3 -c "from app.core import hasher_mot_de_passe; print(hasher_mot_de_passe('votre_mot_de_passe'))"
+python3 -c "from app.core import hasher_mot_de_passe; print(hasher_mot_de_passe('your_password'))"
 ```
 
-4. **La documentation du swagger est disponible a l'url :**
+---
 
- - http://localhost:8080/docs
+## 📡 API Overview
 
-> ℹ️ La documentation est intentionnellement laissée accessible en production à des fins de démonstration.
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `POST` | `/auth/login` | Administrator login | No |
+| `GET` | `/parsers/by-categorie/{id}` | List parsers in a category | No |
+| `GET` | `/parsers/admin` | List all parsers (detailed) | Yes |
+| `POST` | `/parsers/admin` | Create a new parser | Yes |
+| `PATCH` | `/parsers/admin/{id}` | Update an existing parser | Yes |
+| `DELETE` | `/parsers/admin/{id}` | Remove a parser | Yes |
 
-## 🔬 Lancer les tests
+---
 
-Par défaut, les dépendances de test sont installées lors du build de l’image.  
-Pour désactiver ce comportement, retirez les lignes suivantes du Dockerfile :
+## 📖 API Documentation
+
+The Swagger documentation is available at:
+- **Local URL**: [http://localhost:8080/docs](http://localhost:8080/docs)
+
+> ℹ️ Documentation is intentionally left accessible in production for demonstration purposes.
+
+---
+
+## 📝 Example Parser Object
+
+```json
+{
+  "name": "nginx_access",
+  "description": "Nginx access log parser",
+  "content": "^(?<remote>[^ ]*) (?<host>[^ ]*) (?<user>[^ ]*) \\[(?<time>[^\\]]*)\\] \"(?<method>\\S+)(?: +(?<path>[^ ]*) +\\S*)?\" (?<code>[^ ]*) (?<size>[^ ]*)(?: \"(?<referer>[^\"]*)\" \"(?<agent>[^\"]*)\")?$",
+  "categorie_id": 1
+}
+```
+
+---
+
+## 🔬 Running Tests
+
+By default, test dependencies are installed during the image build.  
+To disable this behavior, remove the following lines from the `Dockerfile`:
 
 ```dockerfile
 COPY requirements/test.txt .
 RUN pip install -r test.txt
 ```
 
-Une base de données spécifique est configurée pour les tests. Pour les exécuter :
+A dedicated database is configured for testing. To run them:
 
 ```bash
 pytest -v 
 ```
 
-## 📁 Structure du projet
+## 🛠️ Troubleshooting
+
+- **Database Connection Error**: Ensure the Docker containers are healthy (`docker compose ps`). Check if the `DATABASE_URL` matches the credentials in `.env`.
+- **Migration Issues**: If you face errors with Alembic, try running `alembic current` to see the current state of your database schema.
+- **CORS Errors**: Verify that `FRONTEND_URL` in your `.env` matches the origin of your web application.
+
+
+## 📁 Project Structure
 
 ```markdown
 
 backend/
 ├── app/
-│   ├── routes/         # Routes FastAPI
-│   ├── core/           # Configuration (settings, sécurité)
-│   ├── models/         # Modèles SQLModel
-│   ├── schemas/        # Schémas Pydantic
-│   ├── services/       # Logique métier
-│   ├── main.py         # Point d'entrée de l'app
-│   ├── seed.py         # Données de tests
+│   ├── routes/         # FastAPI Routes
+│   ├── core/           # Configuration (settings, security)
+│   ├── models/         # SQLModel Models
+│   ├── schemas/        # Pydantic Schemas
+│   ├── services/       # Business Logic
+│   ├── main.py         # App Entry Point
+│   ├── seed.py         # Test Data
 ├── requirements/
-│   ├── base.txt        # Dépendances principales
-│   ├── test.txt        # Dépendances de test
-├── tests/              # Tests unitaires et d'intégration
-├── alembic/            # Migrations Alembic
-├── alembic.ini         # Config Alembic
+│   ├── base.txt        # Main Dependencies
+│   ├── test.txt        # Test Dependencies
+├── tests/              # Unit and Integration Tests
+├── alembic/            # Alembic Migrations
+├── alembic.ini         # Alembic Config
 ├── Dockerfile
 ├── .gitignore
 ├── docker-compose.yaml
@@ -134,9 +193,9 @@ backend/
 
 ```
 
- ## 📦 CI/CD
+## 📦 CI/CD
 
-Fichier .gitlab-ci.yml configuré pour :
+`.gitlab-ci.yml` file configured to:
 
- - Lancer les tests
- - Appliquer les migrations Alembic
+ - Run tests
+ - Apply Alembic migrations
